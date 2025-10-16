@@ -1,6 +1,6 @@
 def event_to_string(state_event):
     """이벤트의 모든 상세 정보를 문자열로 반환 (모든 키 자동 처리)"""
-    from pico2d import SDL_KEYDOWN, SDL_KEYUP, SDL_MOUSEMOTION, SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONUP, SDLK_SPACE, SDLK_a
+    from pico2d import SDL_KEYDOWN, SDL_KEYUP, SDL_MOUSEMOTION, SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONUP, SDLK_SPACE
     import pico2d
 
     event_names = {
@@ -10,7 +10,7 @@ def event_to_string(state_event):
         SDL_MOUSEBUTTONDOWN: 'MOUSEBUTTONDOWN',
         SDL_MOUSEBUTTONUP: 'MOUSEBUTTONUP',
         SDLK_SPACE: 'SPACE',
-        SDLK_a: 'A',
+
     }
 
     state_event_type = state_event[0]  # state_event is ('INPUT', event)

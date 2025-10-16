@@ -3,12 +3,11 @@ from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK
 
 from state_machine import StateMachine
 
-#이벤트 체크 함수
+
 def space_down(event): # event가 space key input 인가를 확인 T/F
     return event[0] == 'INPUT' and event[1].type == SDL_KEYDOWN and event[1].key == SDLK_SPACE
 def a_down(event):
     return event[0] == 'INPUT' and event[1].type == SDL_KEYDOWN and event[1].key == SDLK_a
-
 def right_down(event):
     return event[0] == 'INPUT' and event[1].type == SDL_KEYDOWN and event[1].key == SDLK_RIGHT
 def left_down(event):
@@ -17,7 +16,6 @@ def right_up(event):
     return event[0] == 'INPUT' and event[1].type == SDL_KEYUP and event[1].key == SDLK_RIGHT
 def left_up(event):
     return event[0] == 'INPUT' and event[1].type == SDL_KEYUP and event[1].key == SDLK_LEFT
-
 def time_out(event):
     return event[0] == 'TIME_OUT'
 
@@ -44,7 +42,7 @@ class AutoRun:
             self.boy.x = 800
             self.boy.dir *= -1
             self.boy.face_dir *= -1
-            
+
         if get_time() - self.boy.running_start_time > 5.0:
             self.boy.state_machine.handle_state_event(('TIME_OUT', 0))
 
@@ -133,13 +131,15 @@ class Boy:
         self.SLEEP = Sleep(self)
         self.RUN = Run(self)
         self.AUTO_RUN = AutoRun(self)
+
         self.state_machine = StateMachine(
         self.IDLE, #초기 상태
         {
             self.SLEEP : {space_down : self.IDLE},
-            self.IDLE : {right_down : self.RUN, left_down : self.RUN,  time_out : self.SLEEP , a_down : self.AUTO_RUN},
-            self.RUN : {right_down : self.IDLE, left_down : self.IDLE, right_up : self.IDLE , left_up : self.IDLE },
-            self.AUTO_RUN : {time_out : self.IDLE, right_down : self.RUN, left_down : self.RUN}
+            self.IDLE : {right_down : self.RUN, left_down : self.RUN,  time_out : self.SLEEP , a_down : self.AUTO_RUN , left_up : self.RUN, right_up : self.RUN},
+            self.RUN : {right_down : self.IDLE, left_down : self.IDLE, right_up : self.IDLE , left_up : self.IDLE, a_down : self.AUTO_RUN},
+            self.AUTO_RUN : {time_out : self.IDLE, right_down : self.RUN, left_down : self.RUN},
+
         })
 
     def update(self):
