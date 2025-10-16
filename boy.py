@@ -1,11 +1,13 @@
 from pico2d import load_image, get_time
-from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT
+from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_a
 
 from state_machine import StateMachine
 
 #이벤트 체크 함수
 def space_down(event): # event가 space key input 인가를 확인 T/F
     return event[0] == 'INPUT' and event[1].type == SDL_KEYDOWN and event[1].key == SDLK_SPACE
+def a_down(event):
+    return event[0] == 'INPUT' and event[1].type == SDL_KEYDOWN and event[1].key == SDLK_a
 def right_down(event):
     return event[0] == 'INPUT' and event[1].type == SDL_KEYDOWN and event[1].key == SDLK_RIGHT
 def left_down(event):
@@ -48,7 +50,7 @@ class Run:
         self.boy = boy
 
     def enter(self, event):
-        if right_down(event) or left_up(event):
+        if right_down(event) or left_up(event) or a_down(event):
             self.boy.face_dir = 1
             self.boy.dir = 1
         elif left_down(event) or right_up(event):
@@ -125,7 +127,7 @@ class Boy:
         self.IDLE, #초기 상태
         {
             self.SLEEP : {space_down : self.IDLE},
-            self.IDLE : {right_down : self.RUN, left_down : self.RUN, left_up : self.RUN, right_up : self.RUN, time_out : self.SLEEP},
+            self.IDLE : {right_down : self.RUN, left_down : self.RUN,  time_out : self.SLEEP , a_down : self.RUN},
             self.RUN : {right_down : self.IDLE, left_down : self.IDLE, right_up : self.IDLE , left_up : self.IDLE }
 
         })
