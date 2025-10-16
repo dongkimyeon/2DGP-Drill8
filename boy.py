@@ -8,6 +8,7 @@ def space_down(event): # event가 space key input 인가를 확인 T/F
     return event[0] == 'INPUT' and event[1].type == SDL_KEYDOWN and event[1].key == SDLK_SPACE
 def a_down(event):
     return event[0] == 'INPUT' and event[1].type == SDL_KEYDOWN and event[1].key == SDLK_a
+
 def right_down(event):
     return event[0] == 'INPUT' and event[1].type == SDL_KEYDOWN and event[1].key == SDLK_RIGHT
 def left_down(event):
@@ -25,12 +26,7 @@ class AutoRun:
         self.boy = boy
 
     def enter(self, event):
-        if right_down(event) or left_up(event):
-            self.boy.face_dir = 1
-            self.boy.dir = 1
-        elif left_down(event) or right_up(event):
-            self.boy.face_dir = -1
-            self.boy.dir = -1
+        print('AutoRun')
 
     def exit(self, event):
         pass
@@ -123,13 +119,14 @@ class Boy:
         self.IDLE = Idle(self)
         self.SLEEP = Sleep(self)
         self.RUN = Run(self)
+        self.AUTO_RUN = AutoRun(self)
         self.state_machine = StateMachine(
         self.IDLE, #초기 상태
         {
             self.SLEEP : {space_down : self.IDLE},
-            self.IDLE : {right_down : self.RUN, left_down : self.RUN,  time_out : self.SLEEP , a_down : self.RUN},
-            self.RUN : {right_down : self.IDLE, left_down : self.IDLE, right_up : self.IDLE , left_up : self.IDLE }
-
+            self.IDLE : {right_down : self.RUN, left_down : self.RUN,  time_out : self.SLEEP , a_down : self.AUTO_RUN},
+            self.RUN : {right_down : self.IDLE, left_down : self.IDLE, right_up : self.IDLE , left_up : self.IDLE },
+            self.AUTO_RUN : {}
         })
 
     def update(self):
