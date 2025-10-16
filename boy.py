@@ -26,7 +26,7 @@ class AutoRun:
         self.boy = boy
 
     def enter(self, event):
-        self.boy.dir = 1
+        self.boy.dir = self.boy.face_dir
         self.boy.running_start_time = get_time()
 
 
