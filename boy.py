@@ -24,16 +24,18 @@ def time_out(event):
 class AutoRun:
     def __init__(self, boy):
         self.boy = boy
-        self.boy.running_start_time = get_time()
+
     def enter(self, event):
-        print('AutoRun')
+        self.boy.dir = 1
+        self.boy.running_start_time = get_time()
+
 
     def exit(self, event):
         pass
 
     def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
-        self.boy.x += self.boy.dir * 5
+        self.boy.x += self.boy.dir * 10
         if get_time() - self.boy.running_start_time > 5.0:
             self.boy.state_machine.handle_state_event(('TIME_OUT', 0))
 
