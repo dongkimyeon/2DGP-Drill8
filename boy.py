@@ -43,7 +43,7 @@ class AutoRun:
         if self.boy.face_dir == 1:  # right
             self.boy.image.clip_draw(self.boy.frame * 100, 100, 100, 100, self.boy.x, self.boy.y + 25, 200, 200)
         else:  # face_dir == -1: # left
-            self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x + 25, self.boy.y, 200, 200)
+            self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x + 25, self.boy.y + 25, 200, 200)
 
 class Run:
     def __init__(self, boy):
@@ -130,7 +130,7 @@ class Boy:
             self.SLEEP : {space_down : self.IDLE},
             self.IDLE : {right_down : self.RUN, left_down : self.RUN,  time_out : self.SLEEP , a_down : self.AUTO_RUN},
             self.RUN : {right_down : self.IDLE, left_down : self.IDLE, right_up : self.IDLE , left_up : self.IDLE },
-            self.AUTO_RUN : {time_out : self.IDLE}
+            self.AUTO_RUN : {time_out : self.IDLE, right_down : self.RUN, left_down : self.RUN}
         })
 
     def update(self):
