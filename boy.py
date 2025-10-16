@@ -2,7 +2,7 @@ from pico2d import load_image, get_time
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT
 
 from state_machine import StateMachine
-# 커밋용
+
 #이벤트 체크 함수
 def space_down(event): # event가 space key input 인가를 확인 T/F
     return event[0] == 'INPUT' and event[1].type == SDL_KEYDOWN and event[1].key == SDLK_SPACE
@@ -17,6 +17,31 @@ def left_up(event):
 
 def time_out(event):
     return event[0] == 'TIME_OUT'
+
+class AutoRun:
+    def __init__(self, boy):
+        self.boy = boy
+
+    def enter(self, event):
+        if right_down(event) or left_up(event):
+            self.boy.face_dir = 1
+            self.boy.dir = 1
+        elif left_down(event) or right_up(event):
+            self.boy.face_dir = -1
+            self.boy.dir = -1
+
+    def exit(self, event):
+        pass
+
+    def do(self):
+        self.boy.frame = (self.boy.frame + 1) % 8
+        self.boy.x += self.boy.dir * 5
+
+    def draw(self):
+        if self.boy.face_dir == 1:  # right
+            self.boy.image.clip_draw(self.boy.frame * 100, 100, 100, 100, self.boy.x, self.boy.y)
+        else:  # face_dir == -1: # left
+            self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x, self.boy.y)
 
 class Run:
     def __init__(self, boy):
@@ -44,7 +69,6 @@ class Run:
             self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x, self.boy.y)
 
 class Idle:
-
     def __init__(self, boy):
         self.boy = boy
 
@@ -66,7 +90,6 @@ class Idle:
             self.boy.image.clip_draw(self.boy.frame * 100, 300, 100, 100, self.boy.x, self.boy.y)
         else: # face_dir == -1: # left
             self.boy.image.clip_draw(self.boy.frame * 100, 200, 100, 100, self.boy.x, self.boy.y)
-
 
 class Sleep:
     def __init__(self, boy):
