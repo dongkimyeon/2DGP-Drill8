@@ -144,7 +144,7 @@ class Boy:
 
     def update(self):
         self.state_machine.update()
-
+#제출용커밋
 
     def draw(self):
         self.state_machine.draw()
